@@ -29,10 +29,10 @@ function reducer(state, action) {
 
 
 }
-store.subscribe(() => {
-    history.push(store.getState())
-    console.log(history)
-})
+// store.subscribe(() => {
+//     history.push(store.getState())
+//     console.log(history)
+// })
 
 // async API call 
 
@@ -44,13 +44,14 @@ async function GetUsers() {
 
 // Action Creaters
 
-async function GetUser(dispatch, getState) {
-    try {
-        let { data } = await axios.get("http://localhost:3000/accounts/1")
-        dispatch(initUser({ payload: data }));
-    } catch (error) {
-        console.log(error);
-
+function GetUser(id) {
+    return async (dispatch, getState) => {
+        try {
+            let { data } = await axios.get(`http://localhost:3000/accounts/${id}`)
+            dispatch(initUser({ payload: data }));
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 function initUser({ payload }) {
@@ -67,11 +68,12 @@ function Decrement() {
 function IncrementByAmount(payload) {
     return { type: incrementByAmount, payload: payload }
 }
-setInterval(() => {
-    // store.dispatch(increment());
-    // store.dispatch(IncrementByAmount(3));
-    store.dispatch(GetUser);
-    // store.dispatch(decrement());
-}, 5000);
+// setInterval(() => {
+// store.dispatch(increment());
+// store.dispatch(IncrementByAmount(3));
+store.dispatch(GetUser(1));
+store.getState()
+// store.dispatch(decrement());
+// }, 5000);
 
 // console.log()
